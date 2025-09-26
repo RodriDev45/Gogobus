@@ -2,25 +2,22 @@ package com.example.gogobus.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val OrangeGogobus = Color(0xFFF5951F)
+// Base
+val BluePrimary = Color(0xFF002A33)
+val OrangeSecondary = Color(0xFFF5951F)
+val BlueAccent = Color(0xFF143B43)
 
+// Surfaces
+val BackgroundLight = Color(0xFFF7F8FB)
+val SurfaceLight = Color(0xFFFFFFFF)
+
+// Texts
 val White = Color(0xFFFFFFFF)
-val BackgroundLight = Color(0xFFF0F2F4)
-val SurfaceLine = Color(0xFFE1E5EA)
-val TextBlack = Color(0xFF000000)
-val TextGrayDark = Color(0xFF64748B)
-val TextGrayMedium = Color(0xFF67768D)
-val IconActive = Color(0xFF005566)
-val GrayIconInactive = Color(0xFFA6B0BF)
-val PlaceholderGray = Color(0xFFACB5C3)
+val TextDark = Color(0xFF15191E)   // OnBackground
+val TextGray = Color(0xFF64748B)   // OnSurface
+val TextPlaceholder = Color(0xFFA6B0BF) // Placeholder
 
-
-
-
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
+val ErrorText = Color(0xFFF54965)
+val ErrorAccent = Color(0xFFFEE7EB)
+val SuccessText = Color(0xFF40C4AA)
+val SuccessAccent = Color(0xFFECF9F6)
