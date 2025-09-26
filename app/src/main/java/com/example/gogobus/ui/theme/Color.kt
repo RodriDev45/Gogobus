@@ -10,7 +10,7 @@ val SurfaceLine = Color(0xFFE1E5EA)
 val TextBlack = Color(0xFF000000)
 val TextGrayDark = Color(0xFF64748B)
 val TextGrayMedium = Color(0xFF67768D)
-val IconActive = Color(0xFF005566)
+val IconActive = Color(0xFF004655)
 val GrayIconInactive = Color(0xFFA6B0BF)
 val PlaceholderGray = Color(0xFFACB5C3)
 
