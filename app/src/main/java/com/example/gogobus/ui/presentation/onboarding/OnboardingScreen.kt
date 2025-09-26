@@ -44,6 +44,7 @@ fun OnboardingIndicators(
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .padding(top = 32.dp)
             .padding(horizontal = 32.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
@@ -108,14 +109,14 @@ fun OnboardingScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Get bus tickets from anywhere without hassle",
+                        text = "Consigue tu boleto de autobús desde cualquier lugar sin complicaciones",
                         style = MaterialTheme.typography.headlineSmall,
                         color = White,
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = "Just book through GOGOBUS and get tickets without the hassle of coming to our agents.",
+                        text = "Simplemente reserve a través de GOGOBUS y obtenga boletos sin la molestia de venir a nuestros agentes.",
                         style = MaterialTheme.typography.bodyLarge,
                         color = White.copy(alpha = 0.9f),
                         textAlign = TextAlign.Center
