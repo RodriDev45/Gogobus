@@ -60,6 +60,9 @@ dependencies {
     //Navigation Compose
     implementation(libs.navigation.compose)
 
+    //Splash
+    implementation(libs.androidx.splashscreen)
+
     //Lifecycle ViewModel Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
