@@ -1,8 +1,7 @@
-package com.example.gogobus.ui.onboarding.components
+package com.example.gogobus.ui.presentation.onboarding.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,7 +31,7 @@ fun OnboardingButtons(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(24.dp),
+            .padding(horizontal = 24.dp, vertical = 32.dp), // Increased vertical padding
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
@@ -40,17 +39,16 @@ fun OnboardingButtons(
             colors = ButtonDefaults.buttonColors(containerColor = OrangeSecondary),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp),
-            shape = RoundedCornerShape(12.dp),
-            contentPadding = PaddingValues(vertical = 14.dp)
+                .height(56.dp), // Standardized height
+            shape = RoundedCornerShape(16.dp) // Standardized corner radius
         ) {
             Text(
                 text = if (currentPage == pageCount - 1) "Get Started" else "Next",
-                style = AppTypography.body16SemiBold
+                style = AppTypography.body16Bold // Bolder text for emphasis
             )
         }
 
-        Spacer(Modifier.height(32.dp))
+        Spacer(Modifier.height(24.dp)) // Reduced spacer for a tighter look
 
         Row {
             Text("¿No tienes una cuenta? ",

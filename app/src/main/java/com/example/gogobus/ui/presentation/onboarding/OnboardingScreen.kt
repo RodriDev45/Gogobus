@@ -1,4 +1,4 @@
-package com.example.gogobus.ui.onboarding
+package com.example.gogobus.ui.presentation.onboarding
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,10 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import com.example.gogobus.R
-import com.example.gogobus.ui.onboarding.components.OnboardingButtons
-import com.example.gogobus.ui.onboarding.components.OnboardingContent
-import com.example.gogobus.ui.onboarding.components.OnboardingIndicator
-import com.example.gogobus.ui.onboarding.model.OnboardingPage
+import com.example.gogobus.ui.presentation.onboarding.components.OnboardingButtons
+import com.example.gogobus.ui.presentation.onboarding.components.OnboardingContent
+import com.example.gogobus.ui.presentation.onboarding.components.OnboardingIndicator
+import com.example.gogobus.ui.presentation.onboarding.model.OnboardingPage
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.gogobus.ui.theme.BlueAccent
 import com.example.gogobus.ui.theme.BluePrimary

@@ -1,4 +1,4 @@
-package com.example.gogobus.ui.onboarding.model
+package com.example.gogobus.ui.presentation.onboarding.model
 
 // model/OnboardingPage.kt
 data class OnboardingPage(

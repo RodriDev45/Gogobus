@@ -1,4 +1,4 @@
-package com.example.gogobus.ui.onboarding.components
+package com.example.gogobus.ui.presentation.onboarding.components
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween

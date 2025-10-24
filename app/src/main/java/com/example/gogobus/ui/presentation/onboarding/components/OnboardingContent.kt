@@ -1,4 +1,4 @@
-package com.example.gogobus.ui.onboarding.components
+package com.example.gogobus.ui.presentation.onboarding.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.gogobus.ui.onboarding.model.OnboardingPage
+import com.example.gogobus.ui.presentation.onboarding.model.OnboardingPage
 import com.example.gogobus.ui.presentation.home.theme.AppTypography
 
 // components/OnboardingContent.kt

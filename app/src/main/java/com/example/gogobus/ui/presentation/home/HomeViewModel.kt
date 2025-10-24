@@ -1,31 +1,31 @@
 package com.example.gogobus.ui.presentation.home
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.gogobus.domain.repository.MyRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(
-  private val repository: MyRepository
-): ViewModel() {
+// NO DEBE HABER NINGUNA DATA CLASS AQUÍ. Se importa la de HomeUiState.kt
 
-    private val _uiState = MutableStateFlow(HomeUiState())
+class HomeViewModel : ViewModel() {
+    // Usar HomeUiState (con 'i' minúscula) para que coincida con la definición global
+    private val _uiState = MutableStateFlow(HomeUiState(userName = "Aruna Dahlia"))
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    init {
-        loadData()
+    fun updateOrigin(origin: String) {
+        _uiState.value = _uiState.value.copy(origin = origin)
     }
 
-    private fun loadData(){
-        viewModelScope.launch {
-            val result = repository.getPosts()
-            _uiState.value = _uiState.value.copy(posts = result)
-        }
+    fun updateDestination(destination: String) {
+        _uiState.value = _uiState.value.copy(destination = destination)
+    }
+
+    fun updateDate(date: String) {
+        _uiState.value = _uiState.value.copy(date = date)
+    }
+
+    fun searchBuses() {
+        // Lógica de búsqueda de buses
+        println("Buscando buses de ${_uiState.value.origin} a ${_uiState.value.destination}")
     }
 }
