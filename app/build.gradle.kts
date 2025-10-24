@@ -55,6 +55,7 @@ dependencies {
     //Dagger Hilt
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.androidx.compose.runtime)
     ksp(libs.hilt.android.compiler)
 
     //Navigation Compose
