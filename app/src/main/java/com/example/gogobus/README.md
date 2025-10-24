@@ -4,6 +4,8 @@ app/
 │
 ├─ navigation/        # Gráfico de navegación y destinos
 │   └─ AppNavHost.kt
+    └─ AuthNavHost.kt
+    └─ MainNavHost.kt
 │   └─ Destinations.kt
 │
 ├─ core/              # Utilidades, constantes, extensiones, recursos compartidos
