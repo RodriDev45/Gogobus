@@ -1,5 +1,6 @@
 package com.example.gogobus.ui.theme
 
+import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -9,7 +10,12 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
 import com.example.gogobus.ui.presentation.home.theme.Typography
 
 private val DarkColorScheme = darkColorScheme(
@@ -49,13 +55,11 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun GogobusTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
 
-    // 1) obtiene esquema base (dinámico si está activado en Android 12+)
     val baseScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ->
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
@@ -63,8 +67,6 @@ fun GogobusTheme(
         else -> LightColorScheme
     }
 
-    // 2) aseguramos que *siempre* se usen tus colores de marca (override),
-    //    aunque el usuario tenga dynamic color activado
     val colorScheme = baseScheme.copy(
         primary = BluePrimary,
         onPrimary = White,
@@ -79,7 +81,6 @@ fun GogobusTheme(
         onError = White
     )
 
-    // 3) extra colors (mismos valores para ambos modos aquí; puedes variar si quieres)
     val extraColors = DefaultExtraColors.copy(
         placeholder = TextPlaceholder,
         successText = SuccessText,
@@ -87,7 +88,19 @@ fun GogobusTheme(
         errorAccent = ErrorAccent
     )
 
-    // 4) proveer extras y luego MaterialTheme (que estará dentro del CompositionLocal)
+    // Control de las barras del sistema (Edge-to-Edge)
+    val view = LocalView.current
+    if (!view.isInEditMode) {
+        SideEffect {
+            val window = (view.context as Activity).window
+            window.statusBarColor = Color.Transparent.toArgb()
+            window.navigationBarColor = Color.Transparent.toArgb()
+
+            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = false // Íconos claros para fondo oscuro
+            WindowCompat.getInsetsController(window, view).isAppearanceLightNavigationBars = true // Íconos oscuros para fondo claro
+        }
+    }
+
     CompositionLocalProvider(LocalExtraColors provides extraColors) {
         MaterialTheme(
             colorScheme = colorScheme,

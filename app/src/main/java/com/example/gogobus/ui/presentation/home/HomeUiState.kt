@@ -1,9 +1,10 @@
 package com.example.gogobus.ui.presentation.home
 
-import com.example.gogobus.domain.model.Post
-
 data class HomeUiState(
-    val isLoading: Boolean = false,
-    val posts: List<Post> = emptyList(),
-    val error: String? = null
+    val userName: String = "",
+    val origin: String = "",
+    val destination: String = "",
+    val date: String = "",
+    val hasHistory: Boolean = false,
+    val historyCount: Int = 0
 )
