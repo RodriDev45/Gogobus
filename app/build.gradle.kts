@@ -57,8 +57,15 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
 
+    //Icons
+    implementation(libs.androidx.compose.animation.core.lint)
+    implementation(libs.androidx.compose.material.icons.extended)
+
     //Navigation Compose
     implementation(libs.navigation.compose)
+
+    //Splash
+    implementation(libs.androidx.splashscreen)
 
     //Lifecycle ViewModel Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
