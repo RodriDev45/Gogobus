@@ -18,7 +18,7 @@ object AppModule {
     @Singleton
     fun provideApi(): GogobusApi =
         Retrofit.Builder()
-            .baseUrl("https://jsonplaceholder.typicode.com/")
+            .baseUrl("https://gogobusbackend.onrender.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(GogobusApi::class.java)

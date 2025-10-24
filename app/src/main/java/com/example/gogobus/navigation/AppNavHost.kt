@@ -12,6 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.gogobus.ui.presentation.home.HomeScreen
+import com.example.gogobus.ui.presentation.login.LoginScreen
+import com.example.gogobus.ui.presentation.register.RegisterScreen
 
 @Composable
 fun AppNavHost(
@@ -22,7 +24,7 @@ fun AppNavHost(
         startDestination = Destinations.Home.route
     ) {
         composable(Destinations.Home.route) {
-            HomeScreen()
+            RegisterScreen()
         }
         composable(
             route = "${Destinations.Detail.route}/{id}",
