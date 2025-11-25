@@ -1,11 +1,11 @@
 package com.example.gogobus.ui.presentation.register
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,16 +16,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Badge
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -35,6 +38,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.gogobus.R
 import com.example.gogobus.ui.components.buttons.ButtonGoogle
 import com.example.gogobus.ui.components.buttons.ButtonPrimary
@@ -44,11 +48,31 @@ import com.example.gogobus.ui.components.inputs.Input
 import com.example.gogobus.ui.components.inputs.PasswordInput
 import com.example.gogobus.ui.presentation.home.theme.AppTypography
 import com.example.gogobus.ui.presentation.home.theme.Inter
-import com.example.gogobus.ui.presentation.login.LoginScreen
 import com.example.gogobus.ui.theme.GogobusTheme
 
 @Composable
-fun RegisterScreen(modifier: Modifier = Modifier) {
+fun RegisterScreen(
+    modifier: Modifier = Modifier,
+    viewModel: RegisterViewModel = hiltViewModel(),
+    onRegisterSuccess: () -> Unit,
+    onLogin: () -> Unit
+) {
+    val uiState by viewModel.registerState.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.registerEvent.collect { event ->
+            when (event) {
+                RegisterUiEvent.NavigateToHome -> {
+                    onRegisterSuccess()
+                }
+                is RegisterUiEvent.ShowError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
     Column(
         modifier = modifier
             .background(MaterialTheme.colorScheme.primary)
@@ -77,8 +101,8 @@ fun RegisterScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Input(
-            value = "",
-            onValueChange = {  },
+            value = uiState.registerRequest.username,
+            onValueChange = {viewModel.updateUserName(it)},
             modifier = modifier,
             placeholder = "Nombre completo",
             leadingIcon = {
@@ -87,18 +111,18 @@ fun RegisterScreen(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(16.dp))
         EmailInput(
-            email = "",
-            onEmailChange = {}
+            email = uiState.registerRequest.email,
+            onEmailChange = { viewModel.updateEmail(it) }
         )
         Spacer(modifier = Modifier.height(16.dp))
         PasswordInput(
-            password = "",
-            onPasswordChange = {},
+            password = uiState.registerRequest.password,
+            onPasswordChange = { viewModel.updatePassword(it) },
         )
         Spacer(modifier = Modifier.height(16.dp))
         PasswordInput(
-            password = "",
-            onPasswordChange = {},
+            password = uiState.registerRequest.password2,
+            onPasswordChange = { viewModel.updatePassword2(it) },
             placeholder = "Confirmar contraseña"
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -157,9 +181,11 @@ fun RegisterScreen(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.height(16.dp))
 
         ButtonPrimary(
-            onClick = {},
+            onClick = { viewModel.register() },
             text = "Registrarse",
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            loading = uiState.isLoading,
+            enabled = !uiState.isLoading
         )
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -205,7 +231,7 @@ fun RegisterScreen(modifier: Modifier = Modifier) {
                 modifier = Modifier.padding(end = 4.dp)
             )
             TextButton(
-                onClick = {},
+                onClick = onLogin,
                 contentPadding = PaddingValues(horizontal = 0.dp)
             ){
                 Text(
@@ -227,7 +253,7 @@ private fun PreviewRegisterScreen() {
     GogobusTheme {
         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
             Box(modifier = Modifier.padding(innerPadding)) {
-                RegisterScreen()
+                RegisterScreen(onRegisterSuccess = {}, onLogin = {})
             }
         }
     }
