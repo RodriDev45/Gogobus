@@ -1,4 +1,4 @@
-package com.example.gogobus.ui.presentation.home.components
+package com.example.gogobus.ui.components.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -20,26 +20,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.example.gogobus.navigation.Destinations
 import com.example.gogobus.ui.theme.GogobusTheme
 import com.example.gogobus.ui.theme.OrangeSecondary
 
 data class BottomNavItem(
     val label: String,
     val icon: ImageVector,
+    val destination: String
 )
 
 @Composable
-fun BottomNavigationBar(modifier: Modifier = Modifier) {
+fun BottomNavigationBar(navController: NavHostController) {
     val items = listOf(
-        BottomNavItem("Home", Icons.Default.Home),
-        BottomNavItem("Activity", Icons.Outlined.AltRoute),
-        BottomNavItem("Notification", Icons.Default.Notifications),
-        BottomNavItem("Profile", Icons.Default.Person)
+        BottomNavItem("Home", Icons.Default.Home, Destinations.Home.route),
+        BottomNavItem("Activity", Icons.Outlined.AltRoute, Destinations.Onboarding.route),
+        BottomNavItem("Notification", Icons.Default.Notifications, Destinations.Home.route),
+        BottomNavItem("Profile", Icons.Default.Person, Destinations.Home.route)
     )
     var selectedItem by remember { mutableIntStateOf(0) }
 
     NavigationBar(
-        modifier = modifier,
         containerColor = Color.White,
         tonalElevation = 8.dp
     ) {
@@ -48,7 +50,10 @@ fun BottomNavigationBar(modifier: Modifier = Modifier) {
                 icon = { Icon(item.icon, contentDescription = item.label) },
                 label = { Text(item.label) },
                 selected = selectedItem == index,
-                onClick = { selectedItem = index },
+                onClick = {
+                    selectedItem = index
+                    navController.navigate(item.destination)
+                },
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = OrangeSecondary,
                     selectedTextColor = OrangeSecondary,
@@ -61,10 +66,3 @@ fun BottomNavigationBar(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun BottomNavigationBarPreview() {
-    GogobusTheme {
-        BottomNavigationBar()
-    }
-}

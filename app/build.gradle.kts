@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.androidx.compose.runtime)
+    implementation(libs.androidx.room.ktx)
     ksp(libs.hilt.android.compiler)
 
     //Icons
@@ -71,7 +72,6 @@ dependencies {
 
     //Lifecycle ViewModel Compose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
-
     //Retrofit
     implementation(libs.retrofit2.retrofit)
     implementation(libs.retrofit2.converter.gson)
@@ -81,6 +81,16 @@ dependencies {
 
     //Datastore
     implementation(libs.datastore.preferences)
+
+    //Logging
+    implementation(libs.squareup.logging)
+
+    //MercadoPago
+    implementation(platform(libs.mercadopago.sdk.bom))
+    implementation(libs.mercadopago.sdk.coreMethods)
+
+    //Coil
+    implementation(libs.coil)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

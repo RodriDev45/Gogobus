@@ -6,10 +6,9 @@ import com.example.gogobus.domain.repository.MyRepository
 import javax.inject.Inject
 
 class MyRepositoryImpl @Inject constructor(
-    private val api: GogobusApi
 ) : MyRepository {
 
     override suspend fun getPosts(): List<Post> {
-        return api.getPosts()
+        return emptyList()
     }
 }

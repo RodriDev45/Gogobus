@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.gogobus.ui.components.buttons.ButtonPrimary
 import com.example.gogobus.ui.presentation.home.theme.AppTypography
 import com.example.gogobus.ui.theme.OrangeSecondary
 import com.example.gogobus.ui.theme.White
@@ -34,19 +35,11 @@ fun OnboardingButtons(
             .padding(horizontal = 24.dp, vertical = 32.dp), // Increased vertical padding
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Button(
+        ButtonPrimary(
+            modifier = Modifier.fillMaxWidth(),
             onClick = onNext,
-            colors = ButtonDefaults.buttonColors(containerColor = OrangeSecondary),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp), // Standardized height
-            shape = RoundedCornerShape(16.dp) // Standardized corner radius
-        ) {
-            Text(
-                text = if (currentPage == pageCount - 1) "Get Started" else "Next",
-                style = AppTypography.body16Bold // Bolder text for emphasis
-            )
-        }
+            text = if (currentPage == pageCount - 1) "Get Started" else "Next"
+        )
 
         Spacer(Modifier.height(24.dp)) // Reduced spacer for a tighter look
 

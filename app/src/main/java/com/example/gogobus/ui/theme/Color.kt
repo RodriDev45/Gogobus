@@ -10,6 +10,8 @@ val BlueAccent = Color(0xFF143B43)
 // Surfaces
 val BackgroundLight = Color(0xFFF7F8FB)
 val SurfaceLight = Color(0xFFFFFFFF)
+val SurfaceCard = Color(0xFFF0F2F4)
+val SurfaceCardBorder = Color(0xFFE1E5EA)
 
 // Texts
 val White = Color(0xFFFFFFFF)
@@ -21,3 +23,5 @@ val ErrorText = Color(0xFFF54965)
 val ErrorAccent = Color(0xFFFEE7EB)
 val SuccessText = Color(0xFF40C4AA)
 val SuccessAccent = Color(0xFFECF9F6)
+val AlertText = Color(0xFFEAB208)
+val AlertAccent = Color(0xFFFEF8E6)

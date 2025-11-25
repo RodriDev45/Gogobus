@@ -19,6 +19,10 @@ splashScreen = "1.0.1"
 runtime = "1.9.3"
 animationCoreLint = "1.9.2"
 materialIconsExtended = "1.7.8"
+roomKtx = "2.8.3"
+logging = "4.12.0"
+mercadoPagoSdkBomVersion = "0.1.3"
+coilVersion = "3.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,6 +53,11 @@ androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime
 
 androidx-compose-animation-core-lint = { group = "androidx.compose.animation", name = "animation-core-lint", version.ref = "animationCoreLint" }
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtended" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
+squareup-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "logging" }
+mercadopago-sdk-bom = { group = "com.mercadopago.android.sdk", name = "sdk-android-bom", version.ref = "mercadoPagoSdkBomVersion" }
+mercadopago-sdk-coreMethods = { group = "com.mercadopago.android.sdk", name = "core-methods" }
+coil = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref = "coilVersion"}
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
