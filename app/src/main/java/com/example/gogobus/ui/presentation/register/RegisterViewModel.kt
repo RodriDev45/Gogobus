@@ -24,17 +24,18 @@ class RegisterViewModel @Inject constructor(
 
     fun register(){
         viewModelScope.launch {
-            if(_registerState.value.registerRequest.username.isEmpty()
-                || _registerState.value.registerRequest.email.isEmpty()
-                || _registerState.value.registerRequest.password.isEmpty()
-                || _registerState.value.registerRequest.password2.isEmpty()
-            ) {
+            if (!_registerState.value.isFormFilled) {
                 _registerEvent.emit(RegisterUiEvent.ShowError("Todos los campos son obligatorios"))
                 return@launch
             }
 
             if(_registerState.value.registerRequest.password != _registerState.value.registerRequest.password2) {
                 _registerEvent.emit(RegisterUiEvent.ShowError("Las contraseñas no coinciden"))
+                return@launch
+            }
+
+            if (!_registerState.value.areTermsAccepted) {
+                _registerEvent.emit(RegisterUiEvent.ShowError("Debes aceptar los términos y condiciones"))
                 return@launch
             }
 
@@ -55,32 +56,47 @@ class RegisterViewModel @Inject constructor(
                 isLoading = false
             )
         }
+    }
 
+    private fun validateForm() {
+        val form = _registerState.value.registerRequest
+        val isFilled = form.username.isNotEmpty() &&
+                form.email.isNotEmpty() &&
+                form.password.isNotEmpty() &&
+                form.password2.isNotEmpty()
+        _registerState.value = _registerState.value.copy(isFormFilled = isFilled)
+    }
 
+    fun updateTermsAccepted(areAccepted: Boolean) {
+        _registerState.value = _registerState.value.copy(areTermsAccepted = areAccepted)
     }
 
     fun updateUserName(username: String){
         _registerState.value = _registerState.value.copy(
             registerRequest = _registerState.value.registerRequest.copy(username = username)
         )
+        validateForm()
     }
 
     fun updateEmail(email: String){
         _registerState.value = _registerState.value.copy(
             registerRequest = _registerState.value.registerRequest.copy(email = email)
         )
+        validateForm()
     }
 
     fun updatePassword(password: String){
         _registerState.value = _registerState.value.copy(
             registerRequest = _registerState.value.registerRequest.copy(password = password)
         )
+        validateForm()
     }
 
     fun updatePassword2(password2: String){
         _registerState.value = _registerState.value.copy(
             registerRequest = _registerState.value.registerRequest.copy(password2 = password2)
         )
+        validateForm()
     }
 
 }
