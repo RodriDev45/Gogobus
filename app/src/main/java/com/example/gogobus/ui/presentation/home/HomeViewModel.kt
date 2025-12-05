@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
-// NO DEBE HABER NINGUNA DATA CLASS AQUÍ. Se importa la de HomeUiState.kt
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
@@ -42,6 +41,7 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+    
 
     fun updateOrigin(origin: Location?) {
         _uiState.value = _uiState.value.copy(origin = origin)

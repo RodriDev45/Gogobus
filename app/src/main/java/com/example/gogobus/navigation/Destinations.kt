@@ -10,6 +10,7 @@ sealed class Destinations(val route: String) {
     object SummaryTrip: Destinations("summary-trip")
     object Payment: Destinations("payment")
     object Map: Destinations("map")
+    object Profile: Destinations("profile")
 
 
     object Detail: Destinations("detail")

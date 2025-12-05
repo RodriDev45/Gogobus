@@ -16,6 +16,7 @@ import com.example.gogobus.ui.components.navigation.BottomNavigationBar
 import com.example.gogobus.ui.presentation.home.HomeScreen
 import com.example.gogobus.ui.presentation.map.MapScreen
 import com.example.gogobus.ui.presentation.payment.PaymentScreen
+import com.example.gogobus.ui.presentation.profile.ProfileScreen
 import com.example.gogobus.ui.presentation.search.SearchScreen
 import com.example.gogobus.ui.presentation.summary.SummaryScreen
 import com.example.gogobus.ui.presentation.tripdetail.TripDetailScreen
@@ -31,7 +32,9 @@ fun MainNavHost(
 
     // Solo mostrar el BottomNavigation en ciertas rutas
     val bottomNavRoutes = listOf(
-        Destinations.Home.route
+        Destinations.Home.route,
+        Destinations.Profile.route
+
     )
 
     Scaffold(
@@ -59,6 +62,12 @@ fun MainNavHost(
                         )
                     }
                 )
+            }
+
+            composable(Destinations.Profile.route) {
+                ProfileScreen(onNavToHome = {
+                    navController.navigate(Destinations.Home.route)
+                })
             }
 
             composable(
