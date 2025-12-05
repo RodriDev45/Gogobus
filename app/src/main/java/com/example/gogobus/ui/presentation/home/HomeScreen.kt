@@ -70,7 +70,7 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxWidth()
 
             ) {
-                HomeTopBar(userName = "Maria")
+                HomeTopBar(userName = uiState.userName)
                 BusTicketForm(
                     modifier = Modifier,
                     origin = uiState.origin,

@@ -34,6 +34,13 @@ class SessionManager @Inject constructor(
     fun setFirstOnboarding(value: Boolean) {
         _firstOnboarding.value = value
     }
+    suspend fun getUserNameFromToken(): String? {
+        val token = tokenDataStore.getAccessToken().first()
+        if (token.isNullOrEmpty()) return null
+
+        val payload = decodeJwtPayload(token)
+        return payload?.optString("username")
+    }
 
 
     private fun decodeJwtPayload(token: String): JSONObject? {

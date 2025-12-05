@@ -37,7 +37,7 @@ fun BottomNavigationBar(navController: NavHostController) {
         BottomNavItem("Home", Icons.Default.Home, Destinations.Home.route),
         BottomNavItem("Activity", Icons.Outlined.AltRoute, Destinations.Onboarding.route),
         BottomNavItem("Notification", Icons.Default.Notifications, Destinations.Home.route),
-        BottomNavItem("Profile", Icons.Default.Person, Destinations.Home.route)
+        BottomNavItem("Profile", Icons.Default.Person, Destinations.Profile.route)
     )
     var selectedItem by remember { mutableIntStateOf(0) }
 

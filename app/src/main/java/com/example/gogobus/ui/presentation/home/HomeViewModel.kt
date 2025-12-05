@@ -15,15 +15,25 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
-// NO DEBE HABER NINGUNA DATA CLASS AQUÍ. Se importa la de HomeUiState.kt
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
     private val sessionManager: SessionManager
 ) : ViewModel() {
-    // Usar HomeUiState (con 'i' minúscula) para que coincida con la definición global
-    private val _uiState = MutableStateFlow(HomeUiState(userName = "Aruna Dahlia"))
+
+    private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+
+    init {
+        loadUserName()
+    }
+
+    private fun loadUserName() {
+        viewModelScope.launch {
+            val userName = sessionManager.getUserNameFromToken() ?: "Hola"
+            _uiState.value = _uiState.value.copy(userName = userName)
+        }
+    }
 
     fun updateOrigin(origin: Location?) {
         _uiState.value = _uiState.value.copy(origin = origin)
