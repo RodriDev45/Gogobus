@@ -1,5 +1,6 @@
 package com.example.gogobus.ui.presentation.profile
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,10 +39,17 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     onNavToHome: () -> Unit
 ) {
-    val userState by viewModel.user.collectAsState()
+    val uiState by viewModel.uiProfileState.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.getProfile()
+        viewModel.uiProfileEvent.collect { event ->
+            when (event) {
+                is ProfileUiEvent.ShowError -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     Scaffold(
@@ -65,26 +74,13 @@ fun ProfileScreen(
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
-            when (val state = userState) {
-                is Result.Loading -> {
-                    CircularProgressIndicator(color = OrangeSecondary)
-                }
-                is Result.Success -> {
-                    val user = state.data
-                    if (user != null) {
-                        ProfileContent(user = user, onLogout = { /* TODO: Logout logic */ })
-                    }
-                }
-                is Result.Error -> {
-                    Text(text = "Error: ${state.message}", color = ErrorText)
-                }
-            }
+            ProfileContent(user = uiState.user, onLogout = { viewModel.logout() }, isLoading = uiState.isLoading)
         }
     }
 }
 
 @Composable
-fun ProfileContent(user: User, onLogout: () -> Unit) {
+fun ProfileContent(user: User, onLogout: () -> Unit, isLoading: Boolean = false) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -130,11 +126,11 @@ fun ProfileContent(user: User, onLogout: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                     color = TextDark
                 )
-                ProfileOptionItem(icon = Icons.Outlined.AccountCircle, label = "Edit Profile") { /*TODO*/ }
+                ProfileOptionItem(icon = Icons.Outlined.AccountCircle, label = "Edit Profile") { }
                 Divider(color = SurfaceCardBorder, thickness = 1.dp)
-                ProfileOptionItem(icon = Icons.Outlined.Lock, label = "Change Password") { /*TODO*/ }
+                ProfileOptionItem(icon = Icons.Outlined.Lock, label = "Change Password") { }
                 Divider(color = SurfaceCardBorder, thickness = 1.dp)
-                ProfileOptionItem(icon = Icons.Outlined.CreditCard, label = "Payment Methods") { /*TODO*/ }
+                ProfileOptionItem(icon = Icons.Outlined.CreditCard, label = "Payment Methods") {  }
             }
         }
 
@@ -153,9 +149,9 @@ fun ProfileContent(user: User, onLogout: () -> Unit) {
                     modifier = Modifier.padding(16.dp),
                     color = TextDark
                 )
-                ProfileOptionItem(icon = Icons.Outlined.Email, label = "Contact Support") { /*TODO*/ }
+                ProfileOptionItem(icon = Icons.Outlined.Email, label = "Contact Support") { }
                 Divider(color = SurfaceCardBorder, thickness = 1.dp)
-                ProfileOptionItem(icon = Icons.Outlined.Info, label = "FAQ") { /*TODO*/ }
+                ProfileOptionItem(icon = Icons.Outlined.Info, label = "FAQ") {  }
             }
         }
 
@@ -165,11 +161,19 @@ fun ProfileContent(user: User, onLogout: () -> Unit) {
         OutlinedButton(
             onClick = onLogout,
             modifier = Modifier.fillMaxWidth(),
-            border = BorderStroke(1.dp, ErrorText)
+            border = BorderStroke(1.dp, ErrorText),
+            enabled = !isLoading,
         ) {
-            Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Logout", tint = ErrorText)
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Logout", color = ErrorText, fontWeight = FontWeight.Bold)
+            if(isLoading){
+                CircularProgressIndicator(
+                    color = ErrorText
+                )
+            }else{
+                Icon(Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Logout", tint = ErrorText)
+                Spacer(modifier = Modifier.width(8.dp))
+                Text("Logout", color = ErrorText, fontWeight = FontWeight.Bold)
+            }
+
         }
     }
 }
