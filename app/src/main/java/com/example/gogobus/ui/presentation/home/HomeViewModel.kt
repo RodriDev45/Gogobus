@@ -3,6 +3,7 @@ package com.example.gogobus.ui.presentation.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gogobus.data.local.UserDataStore
 import com.example.gogobus.domain.model.Location
 import com.example.gogobus.domain.session.SessionManager
 import com.example.gogobus.domain.usecase.LogoutUseCase
@@ -18,26 +19,34 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
-    private val sessionManager: SessionManager
+    private val sessionManager: SessionManager,
+    private val userDataStore: UserDataStore
 ) : ViewModel() {
-
-    private val _uiState = MutableStateFlow(HomeUiState())
+    // Usar HomeUiState (con 'i' minúscula) para que coincida con la definición global
+    private val _uiState = MutableStateFlow(HomeUiState(userName = ""))
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     init {
-        loadUserName()
+        observeUser()
     }
 
-    private fun loadUserName() {
+    private fun observeUser() {
         viewModelScope.launch {
-            val userName = sessionManager.getUserNameFromToken() ?: "Hola"
-            _uiState.value = _uiState.value.copy(userName = userName)
+            userDataStore.getUser().collect { user ->
+                user?.let {
+                    _uiState.value = _uiState.value.copy(
+                        userName = it.username,
+                    )
+                }
+            }
         }
     }
+    
 
     fun updateOrigin(origin: Location?) {
         _uiState.value = _uiState.value.copy(origin = origin)
     }
+
 
     fun updateDestination(destination: Location?) {
         _uiState.value = _uiState.value.copy(destination = destination)

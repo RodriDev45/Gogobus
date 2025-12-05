@@ -268,14 +268,18 @@ private fun ItemSummaryTripPrev() {
                         name = "Trujillo",
                         terminal = "Terminal Terrestre Trujillo - Terrapuerto",
                         address = "Av. Mansiche 2260, Trujillo",
-                        region = "La Libertad"
+                        region = "La Libertad",
+                        latitude = -12.01,
+                        longitude = -77.91
                     ),
                     destination = Location(
                         id = 2,
                         name = "Lima",
                         terminal = "Terminal Plaza Norte",
                         address = "Av. Tomas Valle 1531, Independencia",
-                        region = "Lima Metropolitana"
+                        region = "Lima Metropolitana",
+                        latitude = -12.01,
+                        longitude = -77.91
                     ),
                     departureTime = LocalDateTime.parse("2024-11-15T08:30"),
                     arrivalTime = LocalDateTime.parse("2024-11-15T17:30"),
