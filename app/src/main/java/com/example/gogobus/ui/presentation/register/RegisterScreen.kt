@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Badge
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -42,12 +43,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.gogobus.R
 import com.example.gogobus.ui.components.buttons.ButtonGoogle
 import com.example.gogobus.ui.components.buttons.ButtonPrimary
-import com.example.gogobus.ui.components.inputs.CheckBox
 import com.example.gogobus.ui.components.inputs.EmailInput
 import com.example.gogobus.ui.components.inputs.Input
 import com.example.gogobus.ui.components.inputs.PasswordInput
-import com.example.gogobus.ui.presentation.home.theme.AppTypography
-import com.example.gogobus.ui.presentation.home.theme.Inter
 import com.example.gogobus.ui.theme.GogobusTheme
 
 @Composable
@@ -87,14 +85,14 @@ fun RegisterScreen(
         )
         Text(
             text = "Registrarse",
-            style = AppTypography.headline32SemiBold,
+            style = MaterialTheme.typography.headlineLarge,
             color = Color.White,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Crea una cuenta y vive una experiencia de viaje inolvidable",
-            style = AppTypography.body12Regular,
+            style = MaterialTheme.typography.bodyMedium,
             color = Color.White,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -126,57 +124,59 @@ fun RegisterScreen(
             placeholder = "Confirmar contraseña"
         )
         Spacer(modifier = Modifier.height(8.dp))
-        CheckBox(
-            checked = false,
-            onCheckedChange = {},
-            content = {
-                val annotatedText = buildAnnotatedString {
-                    withStyle(
-                        style = SpanStyle(
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 14.sp,
-                            fontFamily = Inter,
-                            color = Color.White
-                        )
-                    ) {
-                        append("He leído y acepto los ")
-                    }
 
-                    pushStringAnnotation(tag = "TERMS", annotation = "terms")
-                    withStyle(
-                        style = SpanStyle(
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 14.sp,
-                            fontFamily = Inter,
-                            textDecoration = TextDecoration.Underline,
-                            color = Color.White
-                        )
-                    ) {
-                        append("Términos y Condiciones")
-                    }
-                    pop()
-                    withStyle(
-                        style = SpanStyle(
-                            fontWeight = FontWeight.Normal,
-                            fontSize = 14.sp,
-                            fontFamily = Inter,
-                            color = Color.White
-                        )
-                    ) {
-                        append(" de Gogobus.")
-                    }
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = uiState.areTermsAccepted,
+                onCheckedChange = { viewModel.updateTermsAccepted(it) },
+                enabled = uiState.isFormFilled
+            )
+            val annotatedText = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 14.sp,
+                        color = Color.White
+                    )
+                ) {
+                    append("He leído y acepto los ")
                 }
 
-                ClickableText(
-                    text = annotatedText,
-                    style = MaterialTheme.typography.bodyMedium,
-                    onClick = { offset ->
-                        annotatedText.getStringAnnotations("TERMS", offset, offset)
-                            .firstOrNull()?.let {  }
-                    }
-                )
+                pushStringAnnotation(tag = "TERMS", annotation = "terms")
+                withStyle(
+                    style = SpanStyle(
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        textDecoration = TextDecoration.Underline,
+                        color = Color.White
+                    )
+                ) {
+                    append("Términos y Condiciones")
+                }
+                pop()
+                withStyle(
+                    style = SpanStyle(
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 14.sp,
+                        color = Color.White
+                    )
+                ) {
+                    append(" de Gogobus.")
+                }
             }
-        )
+
+            ClickableText(
+                text = annotatedText,
+                style = MaterialTheme.typography.bodyMedium,
+                onClick = { offset ->
+                    annotatedText.getStringAnnotations("TERMS", offset, offset)
+                        .firstOrNull()?.let {
+                            Toast.makeText(context, "Términos y Condiciones", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            )
+        }
+
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -185,7 +185,7 @@ fun RegisterScreen(
             text = "Registrarse",
             modifier = Modifier.fillMaxWidth(),
             loading = uiState.isLoading,
-            enabled = !uiState.isLoading
+            enabled = !uiState.isLoading && uiState.isFormFilled && uiState.areTermsAccepted
         )
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -201,7 +201,7 @@ fun RegisterScreen(
             Text(
                 text = "O registrese con",
                 color = Color.White,
-                style = AppTypography.body14Light,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(horizontal = 8.dp)
             )
             Spacer(
@@ -227,7 +227,7 @@ fun RegisterScreen(
             Text(
                 text = "¿Ya tienes una cuenta?",
                 color = Color.White,
-                style = AppTypography.body14Light,
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(end = 4.dp)
             )
             TextButton(
@@ -237,7 +237,7 @@ fun RegisterScreen(
                 Text(
                     text = "Iniciar sesión",
                     color = Color.White,
-                    style = AppTypography.body14Bold
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold)
                 )
             }
         }
