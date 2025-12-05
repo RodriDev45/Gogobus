@@ -5,5 +5,8 @@ data class Location(
     val name: String,
     val terminal: String,
     val address: String,
-    val region: String
+    val region: String,
+    val latitude: Double,
+    val longitude: Double
+
 )

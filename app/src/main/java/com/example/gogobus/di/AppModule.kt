@@ -7,12 +7,14 @@ import com.example.gogobus.data.remote.interceptors.AuthInterceptor
 import com.example.gogobus.data.remote.GogobusApi
 import com.example.gogobus.data.remote.api.BookingApi
 import com.example.gogobus.data.remote.api.LocationApi
+import com.example.gogobus.data.remote.api.MapsApi
 import com.example.gogobus.data.remote.api.PaymentApi
 import com.example.gogobus.data.remote.api.TripApi
 import com.example.gogobus.data.remote.api.UserApi
 import com.example.gogobus.data.repository.AuthRepositoryImpl
 import com.example.gogobus.data.repository.BookingRepositoryImpl
 import com.example.gogobus.data.repository.LocationRepositoryImpl
+import com.example.gogobus.data.repository.MapsRepositoryImpl
 import com.example.gogobus.data.repository.MyRepositoryImpl
 import com.example.gogobus.data.repository.PaymentRepositoryImpl
 import com.example.gogobus.data.repository.TripRepositoryImpl
@@ -20,6 +22,7 @@ import com.example.gogobus.domain.repository.AuthRepository
 import com.example.gogobus.domain.repository.BaseRepository
 import com.example.gogobus.domain.repository.BookingRepository
 import com.example.gogobus.domain.repository.LocationRepository
+import com.example.gogobus.domain.repository.MapsRepository
 import com.example.gogobus.domain.repository.MyRepository
 import com.example.gogobus.domain.repository.PaymentRepository
 import com.example.gogobus.domain.repository.TripRepository
@@ -27,6 +30,7 @@ import com.example.gogobus.domain.session.SessionManager
 import com.example.gogobus.domain.usecase.CreateBookingUseCase
 import com.example.gogobus.domain.usecase.CreatePaymentUseCase
 import com.example.gogobus.domain.usecase.GetBookingDetailUseCase
+import com.example.gogobus.domain.usecase.GetTravelRouteUseCase
 import com.example.gogobus.domain.usecase.GetTripDetailUseCase
 import com.example.gogobus.domain.usecase.LoginUseCase
 import com.example.gogobus.domain.usecase.LogoutUseCase
@@ -45,6 +49,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -68,6 +73,7 @@ object AppModule {
 
     @Provides
     @Singleton
+    @Named("Gogobus")
     fun provideApi(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl("https://gogobusbackend.onrender.com/api/")
@@ -75,25 +81,46 @@ object AppModule {
             .client(client)
             .build()
 
+    @Provides
+    @Singleton
+    @Named("GoogleMaps")
+    fun provideGoogleMapsRetrofit(logging: HttpLoggingInterceptor): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://maps.googleapis.com/maps/api/") // base de Google
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor(logging) // no uses AuthInterceptor aquí
+                    .build()
+            )
+            .build()
+    }
+
+
     // Aquí provees tus APIs
     @Provides @Singleton
-    fun provideUserApi(retrofit: Retrofit): UserApi =
+    fun provideUserApi(@Named("Gogobus") retrofit: Retrofit): UserApi =
         retrofit.create(UserApi::class.java)
 
+    @Provides
+    @Singleton
+    fun provideMapsApi(@Named("GoogleMaps")googleRetrofit: Retrofit): MapsApi =
+        googleRetrofit.create(MapsApi::class.java)
+
     @Provides @Singleton
-    fun provideLocationApi(retrofit: Retrofit): LocationApi =
+    fun provideLocationApi(@Named("Gogobus") retrofit: Retrofit): LocationApi =
         retrofit.create(LocationApi::class.java)
 
     @Provides @Singleton
-    fun provideTripApi(retrofit: Retrofit): TripApi =
+    fun provideTripApi(@Named("Gogobus") retrofit: Retrofit): TripApi =
         retrofit.create(TripApi::class.java)
 
     @Provides @Singleton
-    fun provideBookingApi(retrofit: Retrofit): BookingApi =
+    fun provideBookingApi(@Named("Gogobus") retrofit: Retrofit): BookingApi =
         retrofit.create(BookingApi::class.java)
 
     @Provides @Singleton
-    fun providePaymentApi(retrofit: Retrofit): PaymentApi =
+    fun providePaymentApi(@Named("Gogobus") retrofit: Retrofit): PaymentApi =
         retrofit.create(PaymentApi::class.java)
 
     @Provides
@@ -128,9 +155,20 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideMapsRepository(api: MapsApi): MapsRepository =
+        MapsRepositoryImpl(api)
+
+    @Provides
+    @Singleton
     fun provideGetTripDetailUseCase(
         repository: TripRepository
     ): GetTripDetailUseCase = GetTripDetailUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun provideGetTravelRouteUseCase(
+        repository: MapsRepository
+    ): GetTravelRouteUseCase = GetTravelRouteUseCase(repository)
 
     @Provides
     @Singleton

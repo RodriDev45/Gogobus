@@ -14,10 +14,10 @@ import androidx.navigation.navArgument
 import com.example.gogobus.domain.model.Location
 import com.example.gogobus.ui.components.navigation.BottomNavigationBar
 import com.example.gogobus.ui.presentation.home.HomeScreen
+import com.example.gogobus.ui.presentation.map.MapScreen
 import com.example.gogobus.ui.presentation.payment.PaymentScreen
 import com.example.gogobus.ui.presentation.profile.ProfileScreen
 import com.example.gogobus.ui.presentation.search.SearchScreen
-import com.example.gogobus.ui.presentation.shared.SearchSharedViewModel
 import com.example.gogobus.ui.presentation.summary.SummaryScreen
 import com.example.gogobus.ui.presentation.tripdetail.TripDetailScreen
 import com.google.gson.Gson
@@ -71,6 +71,25 @@ fun MainNavHost(
             }
 
             composable(
+                route = "${Destinations.Map.route}/{origin}/{destination}"
+            ) { backStackEntry ->
+                val gson = Gson()
+                val originJson = backStackEntry.arguments?.getString("origin")
+                val destinationJson = backStackEntry.arguments?.getString("destination")
+
+                val origin = gson.fromJson(Uri.decode(originJson), Location::class.java)
+                val destination = gson.fromJson(Uri.decode(destinationJson), Location::class.java)
+
+                MapScreen(
+                    origin = origin,
+                    destination = destination,
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
+            }
+
+            composable(
                 route = "${Destinations.Payment.route}/{bookingId}/{totalAmount}",
                 arguments = listOf(
                     navArgument("bookingId") { type = NavType.IntType },
@@ -97,6 +116,7 @@ fun MainNavHost(
                 )
             ) { backStackEntry ->
                 val id = backStackEntry.arguments?.getInt("id")
+
                 if (id != null) {
                     TripDetailScreen(
                         id = id,
@@ -105,6 +125,17 @@ fun MainNavHost(
                             navController.navigate(
                                 "${Destinations.SummaryTrip.route}/$bookingId/$tripId"
                             )
+                        },
+                        onNavigateToMap = { origin, destination ->
+                            val gson = Gson()
+                            val originJson = Uri.encode(gson.toJson(origin))
+                            val destinationJson = Uri.encode(gson.toJson(destination))
+                            navController.navigate(
+                                "${Destinations.Map.route}/$originJson/$destinationJson"
+                            )
+                        },
+                        onBack = {
+                            navController.popBackStack()
                         }
                     )
                 }

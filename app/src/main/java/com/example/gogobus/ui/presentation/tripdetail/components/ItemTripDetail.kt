@@ -2,6 +2,7 @@ package com.example.gogobus.ui.presentation.tripdetail.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.gogobus.R
+import com.example.gogobus.domain.model.Location
 import com.example.gogobus.domain.model.TripDetail
 import com.example.gogobus.domain.util.DateUtils
 import com.example.gogobus.ui.presentation.home.theme.AppTypography
@@ -45,7 +47,8 @@ import com.example.gogobus.ui.theme.TextPlaceholder
 @Composable
 fun ItemTripDetail(
     modifier: Modifier = Modifier,
-    tripDetail: TripDetail
+    tripDetail: TripDetail,
+    onNavigateToMap: (origin: Location, destination: Location) -> Unit
 ) {
     Card(
         modifier = modifier
@@ -92,6 +95,9 @@ fun ItemTripDetail(
 
                 Row(
                     modifier = Modifier
+                        .clickable {
+                            onNavigateToMap(tripDetail.origin, tripDetail.destination)
+                        }
                         .border(
                             width = 1.dp,
                             color = TextPlaceholder,
@@ -102,13 +108,13 @@ fun ItemTripDetail(
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Icon(
-                        painter = painterResource(R.drawable.access_time_24),
+                        painter = painterResource(R.drawable.map_24),
                         contentDescription = null,
                         tint = TextPlaceholder,
                     )
 
                     Text(
-                        text = DateUtils.calculateTripDuration(tripDetail.departureTime, tripDetail.arrivalTime),
+                        text = "Ver Ruta",
                         color = TextDark,
                         style = AppTypography.body14SemiBold
                     )

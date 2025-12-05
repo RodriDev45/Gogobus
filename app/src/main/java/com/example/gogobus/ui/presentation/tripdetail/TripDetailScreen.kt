@@ -35,6 +35,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.gogobus.R
 import com.example.gogobus.domain.model.BusLayout
+import com.example.gogobus.domain.model.Location
 import com.example.gogobus.ui.components.buttons.ButtonPrimary
 import com.example.gogobus.ui.presentation.home.theme.AppTypography
 import com.example.gogobus.ui.presentation.tripdetail.components.FormPassenger
@@ -57,7 +58,9 @@ fun TripDetailScreen(
     id: Int,
     modifier: Modifier = Modifier,
     viewmodel: TripDetailViewModel = hiltViewModel(),
-    onNavigateToSummary: (bookingId: Int, tripId: Int) -> Unit
+    onNavigateToSummary: (bookingId: Int, tripId: Int) -> Unit,
+    onNavigateToMap: (origin: Location, destination: Location) -> Unit,
+    onBack: () -> Unit
 ) {
     var showSeatsModal by remember { mutableStateOf(false) }
     var showFormModal by remember { mutableStateOf(false) }
@@ -148,7 +151,7 @@ fun TripDetailScreen(
                     tint = Color.White,
                     modifier = Modifier
                         .clickable {
-
+                            onBack()
                         }
                         .background(
                             color = OrangeSecondary,
@@ -194,7 +197,8 @@ fun TripDetailScreen(
                     if(uiState.trip != null){
                         ItemTripDetail(
                             modifier = Modifier,
-                            tripDetail = uiState.trip!!
+                            tripDetail = uiState.trip!!,
+                            onNavigateToMap = onNavigateToMap
                         )
                     }
                 }

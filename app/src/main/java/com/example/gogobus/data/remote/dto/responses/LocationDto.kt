@@ -7,13 +7,17 @@ data class LocationDto(
     val name: String,
     val terminal: String,
     val address: String,
-    val region: String
+    val region: String,
+    val latitude: String,
+    val longitude: String
 ){
     fun toDomain() = Location(
         id = id,
         name = name,
         terminal = terminal,
         address = address,
-        region = region
+        region = region,
+        latitude = latitude.toDouble(),
+        longitude = longitude.toDouble()
     )
 }
